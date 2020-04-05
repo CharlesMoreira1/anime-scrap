@@ -12,6 +12,8 @@ import com.animescrap.feature.home.repository.HomeRepository
 class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
 
     private val mutableLiveDataListNewEpisode = MutableLiveData<Resource<List<NewEpisodeDomain>>>()
+    var currentPage = 1
+    var releasedLoad: Boolean = true
 
     init {
         fetchListNewEpisode()
@@ -20,15 +22,25 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
     val getLiveDataListNewEpisode: LiveData<Resource<List<NewEpisodeDomain>>>
         get() = mutableLiveDataListNewEpisode
 
-    private fun fetchListNewEpisode() {
+    private fun fetchListNewEpisode(page: Int = 1) {
         mutableLiveDataListNewEpisode.loading()
 
         viewModelScope.launchWithCallback(
             onSuccess = {
-                mutableLiveDataListNewEpisode.success(repository.getListNewEpisode(HOME_URL))
+                mutableLiveDataListNewEpisode.success(repository.getListNewEpisode(HOME_URL.plus(page)))
+                releasedLoad = true
             },
             onError = {
                 mutableLiveDataListNewEpisode.error(it)
             })
+    }
+
+    fun nextPage() {
+        fetchListNewEpisode(++currentPage)
+        releasedLoad = false
+    }
+
+    fun backPreviousPage() {
+        fetchListNewEpisode(currentPage)
     }
 }

@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.animescrap.R
+import com.animescrap.core.helper.addPaginationScroll
 import com.animescrap.core.helper.observeResource
 import com.animescrap.core.util.navigateWithAnimations
 import com.animescrap.data.model.home.domain.NewEpisodeDomain
 import com.animescrap.feature.home.presentation.ui.adapter.HomeAdapter
+import com.animescrap.feature.home.presentation.ui.adapter.HomeAdapter.Companion.ITEM_BOTTOM
+import com.animescrap.feature.home.presentation.ui.adapter.HomeAdapter.Companion.ITEM_LIST
 import com.animescrap.feature.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,9 +22,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val viewModel by viewModel<HomeViewModel>()
 
     private val adapterHome: HomeAdapter by lazy {
-        HomeAdapter {
-            navEpisodeDownloadFragment(it)
-        }
+        HomeAdapter(
+            onItemClickListener = {
+                navEpisodeDownloadFragment(it)
+            },
+            onRetryClickListener = {
+                errorBottomScroll(false)
+                viewModel.backPreviousPage()
+            })
     }
 
     private var enableAddListNewEpisode = true
@@ -49,6 +57,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 showSuccess()
             },
             onError = {
+                showError()
             },
             onLoading = {
                 showLoading()
@@ -59,6 +68,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         with(recycler_home) {
             adapter = adapterHome
             val gridLayoutManager = GridLayoutManager(context, 2)
+
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (adapterHome.getItemViewType(position)) {
+                        ITEM_LIST -> 1
+                        ITEM_BOTTOM -> gridLayoutManager.spanCount
+                        else -> gridLayoutManager.spanCount
+                    }
+                }
+            }
+
+            addPaginationScroll(gridLayoutManager,
+                loadMoreItems = {
+                    viewModel.nextPage()
+                },
+                isLoading = {
+                    viewModel.releasedLoad
+                },
+                hideOthersItems = {
+                    include_loading_center.visibility = View.GONE
+                })
+
             layoutManager = gridLayoutManager
         }
     }
@@ -82,7 +113,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showLoading(){
-        include_loading_center.visibility = View.VISIBLE
-        recycler_home.visibility = View.GONE
+        if (viewModel.releasedLoad) {
+            include_loading_center.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showError(){
+        if (viewModel.currentPage > 1) {
+            errorBottomScroll(true)
+        }
+    }
+
+    private fun errorBottomScroll(showError: Boolean) {
+        adapterHome.showErrorRetry(showError)
     }
 }

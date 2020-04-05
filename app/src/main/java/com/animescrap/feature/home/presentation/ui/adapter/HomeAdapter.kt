@@ -6,30 +6,76 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.animescrap.R
+import com.animescrap.core.customview.ItemReload
 import com.animescrap.data.model.home.domain.NewEpisodeDomain
+import kotlinx.android.synthetic.main.row_data_bottom.view.*
 import kotlinx.android.synthetic.main.row_data_home.view.*
 
-class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisodeDomain) -> Unit)) :
-    RecyclerView.Adapter<HomeAdapter.ItemViewHolder>() {
+class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisodeDomain) -> Unit),
+                  private val onRetryClickListener: (() -> Unit)) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var listItem = ArrayList<NewEpisodeDomain>()
-
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ItemViewHolder {
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.row_data_home, p0, false)
-        return ItemViewHolder(view, onItemClickListener)
+    companion object {
+        const val ITEM_LIST = 0
+        const val ITEM_BOTTOM = 1
     }
 
-    override fun getItemCount(): Int = listItem.size
+    private var listItem = ArrayList<NewEpisodeDomain>()
+    private var isLoadingAdded = false
+    private var retryPageLoad = false
 
-    override fun onBindViewHolder(holder: ItemViewHolder, p1: Int) {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+        return if (p1 == ITEM_LIST) {
+            ItemViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.row_data_home, p0, false), onItemClickListener)
+        } else {
+            ItemBottomViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.row_data_bottom, p0, false), onRetryClickListener)
+        }
+    }
 
-        val dataItem = listItem[p1]
-        holder.bindView(dataItem)
+    override fun getItemCount(): Int {
+        return if (isLoadingAdded) {
+            listItem.size + 1
+        } else {
+            listItem.size
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position < listItem.size) ITEM_LIST else ITEM_BOTTOM
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, p1: Int) {
+        when (holder) {
+            is ItemViewHolder -> {
+                val dataItem = listItem[p1]
+                holder.bindView(dataItem)
+            }
+            is ItemBottomViewHolder -> {
+                holder.bindView(retryPageLoad)
+            }
+        }
     }
 
     fun addList(listItem: List<NewEpisodeDomain>) {
         this.listItem.addAll(listItem)
-        notifyItemRangeInserted(this.listItem.size - listItem.size, this.listItem.size)
+        notifyItemChanged(this.listItem.size - listItem.size, this.listItem.size)
+
+        addItemBottom()
+    }
+
+    fun clearList() {
+        isLoadingAdded = false
+        this.listItem.clear()
+        notifyDataSetChanged()
+    }
+
+    fun addItemBottom() {
+        isLoadingAdded = true
+    }
+
+    fun showErrorRetry(showError: Boolean) {
+        retryPageLoad = showError
+        notifyItemChanged(this.listItem.size, 1)
     }
 
     class ItemViewHolder(
@@ -38,7 +84,6 @@ class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisod
     ) :
         RecyclerView.ViewHolder(view) {
 
-
         fun bindView(newEpisodeDomain: NewEpisodeDomain) = with(view) {
             text_title.text = newEpisodeDomain.title
             text_sub_title.text = newEpisodeDomain.subTitle
@@ -46,6 +91,24 @@ class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisod
 
             this.setOnClickListener {
                 onItemClickListener.invoke(newEpisodeDomain)
+            }
+        }
+    }
+
+    class ItemBottomViewHolder(private val view: View, private val onRetryClickListener: (() -> Unit)) :
+        RecyclerView.ViewHolder(view) {
+
+        private val itemBottom: ItemReload = view.item_bottom
+
+        fun bindView(retryPageLoad: Boolean) = with(view) {
+            if (retryPageLoad) {
+                itemBottom.showErrorRetry()
+            } else {
+                itemBottom.showLoading()
+            }
+
+            itemBottom.buttonRetry.setOnClickListener {
+                onRetryClickListener.invoke()
             }
         }
     }

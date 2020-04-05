@@ -1,6 +1,6 @@
 package com.animescrap.core.constant
 
-const val HOME_URL = "https://www.superanimes.org/ultimos-adicionados?valor=video-lancamento"
+const val HOME_URL = "https://www.superanimes.org/ultimos-adicionados?valor=video-lancamento&pagina="
 
 const val CATALOG_URL = "https://www.superanimes.org/busca?parametro=%"
 
