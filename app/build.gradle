@@ -61,8 +61,6 @@ dependencies {
 
     implementation "org.jsoup:jsoup:$jsoup_version"
 
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$life_cycle_version"

@@ -11,7 +11,7 @@ object ApiClientSoup {
     val requestSoup: (String) -> Document = { url ->
         try {
             if (isRunningTest) {
-                Jsoup.parse(urlTest, "UTF-8");
+                Jsoup.parse(urlTest, "UTF-8")
             } else {
                 Jsoup.connect(url)
                     .maxBodySize(0)

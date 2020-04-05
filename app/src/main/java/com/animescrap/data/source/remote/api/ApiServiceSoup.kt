@@ -10,10 +10,6 @@ object ApiServiceSoup {
         return ApiClientSoup.requestSoup(url).select("article.box_view.list").loggingInterceptorJSoupElement()
     }
 
-    fun getEpisodeDownload(url: String): Elements {
-        return ApiClientSoup.requestSoup(url).select("div.conteudoBox").eq(2).loggingInterceptorJSoupElement()
-    }
-
     fun getListAnime(url: String): Elements {
         return ApiClientSoup.requestSoup(url).select("article.box_view.list").loggingInterceptorJSoupElement()
     }

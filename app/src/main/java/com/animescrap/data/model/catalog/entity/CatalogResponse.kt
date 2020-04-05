@@ -9,6 +9,7 @@ class CatalogResponse(element: Element? = null) {
         private const val TYPE_ANIME = "Anime"
         private const val TYPE_OVA = "Ova"
         private const val TYPE_CHINA = "China"
+        private const val TYPE_MOVIE = "filmes-de-animacoes"
     }
 
     var title = element?.select("h1.grid_title")?.text().toString()
@@ -28,7 +29,8 @@ class CatalogResponse(element: Element? = null) {
         }
 
         listElements.forEach {
-            if (it.type == TYPE_ANIME || it.type == TYPE_OVA || it.type == TYPE_CHINA) {
+            if ((it.type == TYPE_ANIME && !it.url.contains(TYPE_MOVIE)) ||
+                it.type == TYPE_OVA || it.type == TYPE_CHINA) {
                 listElementsFilter.add(it)
             }
         }
