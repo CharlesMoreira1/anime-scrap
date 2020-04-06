@@ -36,6 +36,11 @@ class CatalogAdapter(private val onItemClickListener: ((catalogDomain: CatalogDo
         this.listItemFiltered = ArrayList(listItem)
     }
 
+    fun clearList() {
+        this.listItem.clear()
+        notifyDataSetChanged()
+    }
+
     @SuppressLint("DefaultLocale")
     fun filterList(text: String) {
         this.listItem.clear()

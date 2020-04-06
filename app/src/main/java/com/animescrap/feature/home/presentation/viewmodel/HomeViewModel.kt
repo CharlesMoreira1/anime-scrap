@@ -35,6 +35,11 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
             })
     }
 
+    fun refreshViewModel() {
+        currentPage = 1
+        fetchListNewEpisode()
+    }
+
     fun nextPage() {
         fetchListNewEpisode(++currentPage)
         releasedLoad = false

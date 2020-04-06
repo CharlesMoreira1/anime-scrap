@@ -1,11 +1,12 @@
 package com.animescrap.feature.home.presentation.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.animescrap.R
+import com.animescrap.core.base.BaseFragment
 import com.animescrap.core.helper.addPaginationScroll
 import com.animescrap.core.helper.observeResource
 import com.animescrap.core.util.navigateWithAnimations
@@ -17,7 +18,7 @@ import com.animescrap.feature.home.presentation.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val viewModel by viewModel<HomeViewModel>()
 
@@ -25,6 +26,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         HomeAdapter(
             onItemClickListener = {
                 navEpisodeDownloadFragment(it)
+
+                enableAddListItem = false
             },
             onRetryClickListener = {
                 errorBottomScroll(false)
@@ -32,22 +35,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             })
     }
 
-    private var enableAddListNewEpisode = true
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         loadData()
         initUI()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        enableAddListNewEpisode = true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        enableAddListNewEpisode = false
+        swipeRefresh()
     }
 
     private fun loadData() {
@@ -95,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun populate(listNewEpisodeDomain: List<NewEpisodeDomain>) {
-        if (enableAddListNewEpisode) {
+        if (enableAddListItem) {
             adapterHome.addList(listNewEpisodeDomain)
         }
     }
@@ -105,6 +97,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             newEpisodeDomain.url, newEpisodeDomain.title)
 
         findNavController().navigateWithAnimations(navDirections)
+    }
+
+    private fun swipeRefresh() {
+        swipe_refresh_home.setOnRefreshListener {
+            Handler().postDelayed({
+                viewModel.refreshViewModel()
+                adapterHome.clearList()
+
+                swipe_refresh_home.isRefreshing = false
+            }, 1000)
+        }
     }
 
     private fun showSuccess(){

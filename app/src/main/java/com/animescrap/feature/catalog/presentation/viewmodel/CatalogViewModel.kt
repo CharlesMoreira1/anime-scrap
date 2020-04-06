@@ -20,15 +20,19 @@ class CatalogViewModel(private val repository: CatalogRepository) : BaseViewMode
     val getLiveDataListAnime: LiveData<Resource<List<CatalogDomain>>>
         get() = mutableLiveDataListAnime
 
-    private fun fetchListAnime() {
+    private fun fetchListAnime(forceRefresh: Boolean = false) {
         mutableLiveDataListAnime.loading()
 
         viewModelScope.launchWithCallback(
             onSuccess = {
-                mutableLiveDataListAnime.success(repository.getListAnime(CATALOG_URL))
+                mutableLiveDataListAnime.success(repository.getListAnime(CATALOG_URL, forceRefresh))
             },
             onError = {
                 mutableLiveDataListAnime.error(it)
             })
+    }
+
+    fun refreshViewModel() {
+        fetchListAnime(forceRefresh = true)
     }
 }

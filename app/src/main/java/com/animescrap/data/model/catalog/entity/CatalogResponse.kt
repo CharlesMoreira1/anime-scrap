@@ -1,8 +1,11 @@
 package com.animescrap.data.model.catalog.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
+@Entity(tableName = "anime")
 class CatalogResponse(element: Element? = null) {
 
     companion object {
@@ -12,6 +15,8 @@ class CatalogResponse(element: Element? = null) {
         private const val TYPE_MOVIE = "filmes-de-animacoes"
     }
 
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
     var title = element?.select("h1.grid_title")?.text().toString()
     var image = element?.select("img.thumb_anime")?.attr("data-src").toString()
     var url = element?.select("h1.grid_title a")?.attr("href").toString()

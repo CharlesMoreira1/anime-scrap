@@ -1,5 +1,7 @@
 package com.animescrap.core.di.module
 
+import com.animescrap.data.source.local.AppDatabase
+import com.animescrap.data.source.local.dao.CatalogDao
 import com.animescrap.data.source.remote.api.ApiServiceSoup
 import com.animescrap.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.animescrap.feature.catalog.repository.CatalogRepository
@@ -10,7 +12,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single<HomeRepository> { HomeRepository(get()) }
-    single<CatalogRepository> { CatalogRepository(get()) }
+    single<CatalogRepository> { CatalogRepository(get(), get()) }
 }
 
 val viewModelModule = module {
@@ -20,4 +22,9 @@ val viewModelModule = module {
 
 val apiServiceClientModule = module {
     single<ApiServiceSoup> { ApiServiceSoup }
+}
+
+val databaseModule = module {
+    single<AppDatabase> { AppDatabase.getInstance(context = get()) }
+    single<CatalogDao> { get<AppDatabase>().catalogDao() }
 }

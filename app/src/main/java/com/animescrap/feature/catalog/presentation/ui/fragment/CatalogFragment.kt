@@ -1,45 +1,38 @@
 package com.animescrap.feature.catalog.presentation.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.animescrap.R
+import com.animescrap.core.base.BaseFragment
 import com.animescrap.core.helper.observeResource
 import com.animescrap.core.util.navigateWithAnimations
 import com.animescrap.data.model.catalog.domain.CatalogDomain
 import com.animescrap.feature.catalog.presentation.ui.adapter.CatalogAdapter
 import com.animescrap.feature.catalog.presentation.viewmodel.CatalogViewModel
 import kotlinx.android.synthetic.main.fragment_catalog.*
+import kotlinx.android.synthetic.main.fragment_catalog.include_loading_center
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CatalogFragment : Fragment(R.layout.fragment_catalog) {
+class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
     private val viewModel by viewModel<CatalogViewModel>()
 
     private val adapterCatalog: CatalogAdapter by lazy {
         CatalogAdapter {
             navDetailFragment(it)
+
+            enableAddListItem = false
         }
     }
-
-    private var enableAddListCatalog = true
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         loadData()
         initUI()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        enableAddListCatalog = true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        enableAddListCatalog = false
+        swipeRefresh()
     }
 
     private fun loadData() {
@@ -78,6 +71,12 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         })
     }
 
+    private fun populate(listCatalogDomain: List<CatalogDomain>) {
+        if (enableAddListItem) {
+            adapterCatalog.addList(listCatalogDomain)
+        }
+    }
+
     private fun navDetailFragment(catalogDomain: CatalogDomain) {
         val navDirections = CatalogFragmentDirections.actionCatalogFragmentToDetailFragment(
             catalogDomain.url, catalogDomain.title)
@@ -85,9 +84,14 @@ class CatalogFragment : Fragment(R.layout.fragment_catalog) {
         findNavController().navigateWithAnimations(navDirections)
     }
 
-    private fun populate(listCatalogDomain: List<CatalogDomain>) {
-        if (enableAddListCatalog) {
-            adapterCatalog.addList(listCatalogDomain)
+    private fun swipeRefresh() {
+        swipe_refresh_catalog.setOnRefreshListener {
+            Handler().postDelayed({
+                viewModel.refreshViewModel()
+                adapterCatalog.clearList()
+
+                swipe_refresh_catalog.isRefreshing = false
+            }, 1000)
         }
     }
 
