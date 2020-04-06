@@ -23,8 +23,6 @@ class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
     private val adapterCatalog: CatalogAdapter by lazy {
         CatalogAdapter {
             navDetailFragment(it)
-
-            enableAddListItem = false
         }
     }
 
@@ -75,6 +73,8 @@ class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
         if (enableAddListItem) {
             adapterCatalog.addList(listCatalogDomain)
         }
+
+        adapterCatalog.listItemIsEmpty { viewModel.refreshViewModel() }
     }
 
     private fun navDetailFragment(catalogDomain: CatalogDomain) {

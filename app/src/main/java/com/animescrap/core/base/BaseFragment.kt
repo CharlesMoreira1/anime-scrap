@@ -11,4 +11,9 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLa
         super.onResume()
         enableAddListItem = true
     }
+
+    override fun onPause() {
+        super.onPause()
+        enableAddListItem = false
+    }
 }

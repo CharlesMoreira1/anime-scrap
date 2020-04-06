@@ -26,8 +26,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         HomeAdapter(
             onItemClickListener = {
                 navEpisodeDownloadFragment(it)
-
-                enableAddListItem = false
             },
             onRetryClickListener = {
                 errorBottomScroll(false)
@@ -90,6 +88,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         if (enableAddListItem) {
             adapterHome.addList(listNewEpisodeDomain)
         }
+
+        adapterHome.listItemIsEmpty { viewModel.refreshViewModel() }
     }
 
     private fun navEpisodeDownloadFragment(newEpisodeDomain: NewEpisodeDomain) {

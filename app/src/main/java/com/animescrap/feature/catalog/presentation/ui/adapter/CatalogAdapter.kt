@@ -41,6 +41,12 @@ class CatalogAdapter(private val onItemClickListener: ((catalogDomain: CatalogDo
         notifyDataSetChanged()
     }
 
+    fun listItemIsEmpty(onRetryListener: (() -> Unit)) {
+        if (this.listItem.isNullOrEmpty()) {
+            onRetryListener.invoke()
+        }
+    }
+
     @SuppressLint("DefaultLocale")
     fun filterList(text: String) {
         this.listItem.clear()

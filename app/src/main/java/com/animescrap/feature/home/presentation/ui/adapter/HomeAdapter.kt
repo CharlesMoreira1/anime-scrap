@@ -78,6 +78,12 @@ class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisod
         notifyItemChanged(this.listItem.size, 1)
     }
 
+    fun listItemIsEmpty(onRetryListener: (() -> Unit)) {
+        if (this.listItem.isNullOrEmpty()) {
+            onRetryListener.invoke()
+        }
+    }
+
     class ItemViewHolder(
         private val view: View,
         private val onItemClickListener: ((newEpisodeDomain: NewEpisodeDomain) -> Unit)
