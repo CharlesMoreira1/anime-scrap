@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.homeFragment -> showBottomNavigation()
-                    R.id.catalogFragment -> showBottomNavigation()
-                    else -> hideBottomNavigation()
+                    R.id.homeFragment -> showOrHideBottomNavigation(true)
+                    R.id.catalogFragment -> showOrHideBottomNavigation(true)
+                    else -> showOrHideBottomNavigation(false)
                 }
             }
         })
@@ -52,11 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean = currentNavController?.value?.navigateUp() ?: false
 
-    private fun showBottomNavigation(){
-        bottom_navigation.visibility = View.VISIBLE
-    }
-
-    private fun hideBottomNavigation(){
-        bottom_navigation.visibility = View.GONE
+    private fun showOrHideBottomNavigation(isVisible: Boolean){
+        bottom_navigation.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }
