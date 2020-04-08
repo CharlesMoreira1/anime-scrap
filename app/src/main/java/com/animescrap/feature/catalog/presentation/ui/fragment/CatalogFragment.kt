@@ -14,7 +14,6 @@ import com.animescrap.data.model.catalog.domain.CatalogDomain
 import com.animescrap.feature.catalog.presentation.ui.adapter.CatalogAdapter
 import com.animescrap.feature.catalog.presentation.viewmodel.CatalogViewModel
 import kotlinx.android.synthetic.main.fragment_catalog.*
-import kotlinx.android.synthetic.main.fragment_catalog.include_loading_center
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
@@ -67,6 +66,8 @@ class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
                 return true
             }
         })
+
+        search_catalog.setOnClickListener { search_catalog.isIconified = false }
     }
 
     private fun populate(listCatalogDomain: List<CatalogDomain>) {
@@ -90,7 +91,7 @@ class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
                 viewModel.refreshViewModel()
                 adapterCatalog.clearList()
 
-                swipe_refresh_catalog.isRefreshing = false
+                swipe_refresh_catalog?.let { it.isRefreshing = false }
             }, 1000)
         }
     }

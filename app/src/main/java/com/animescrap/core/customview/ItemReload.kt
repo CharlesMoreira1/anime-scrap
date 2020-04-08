@@ -16,7 +16,7 @@ class ItemReload @JvmOverloads constructor(
     var buttonRetry: ImageView
 
     init {
-        inflate(context, R.layout.loading_error, this)
+        inflate(context, R.layout.layout_custom_item_reload, this)
         loading = findViewById(R.id.progress_loading_bottom)
         buttonRetry = findViewById(R.id.image_refresh_bottom_default2)
     }

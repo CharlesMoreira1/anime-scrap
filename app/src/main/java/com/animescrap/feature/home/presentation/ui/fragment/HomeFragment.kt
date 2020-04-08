@@ -105,7 +105,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 viewModel.refreshViewModel()
                 adapterHome.clearList()
 
-                swipe_refresh_home.isRefreshing = false
+                swipe_refresh_home?.let { it.isRefreshing = false }
             }, 1000)
         }
     }

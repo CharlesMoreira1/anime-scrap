@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.animescrap.R
-import kotlinx.android.synthetic.main.layout_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet_dialog.*
 
 class BottomSheetFragment(private val fm: FragmentManager?): BottomSheetDialogFragment() {
 
@@ -27,7 +27,7 @@ class BottomSheetFragment(private val fm: FragmentManager?): BottomSheetDialogFr
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = BottomSheetDialog(context!!, theme)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_bottom_sheet, container, false)
+        return inflater.inflate(R.layout.layout_bottom_sheet_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

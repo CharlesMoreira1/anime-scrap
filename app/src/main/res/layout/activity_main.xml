@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#303030"
+    android:background="#111111"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -24,7 +24,7 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
+        android:background="#2d2d2d"
         app:itemIconTint="@drawable/bottom_navigation_color"
         app:itemTextColor="@drawable/bottom_navigation_color"
         app:menu="@menu/menu_bottom_navigation" />

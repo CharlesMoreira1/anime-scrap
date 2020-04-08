@@ -1,11 +1,12 @@
 package com.animescrap.feature
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.ui.*
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.animescrap.R
 import com.animescrap.core.helper.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,10 +37,26 @@ class MainActivity : AppCompatActivity() {
 
         controller.observe(this, Observer { navController ->
             setupActionBarWithNavController(navController)
+
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                when (destination.id) {
+                    R.id.homeFragment -> showBottomNavigation()
+                    R.id.catalogFragment -> showBottomNavigation()
+                    else -> hideBottomNavigation()
+                }
+            }
         })
 
         currentNavController = controller
     }
 
     override fun onSupportNavigateUp(): Boolean = currentNavController?.value?.navigateUp() ?: false
+
+    private fun showBottomNavigation(){
+        bottom_navigation.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomNavigation(){
+        bottom_navigation.visibility = View.GONE
+    }
 }

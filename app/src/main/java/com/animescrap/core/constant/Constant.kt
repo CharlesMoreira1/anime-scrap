@@ -25,6 +25,10 @@ const val FILTER_LAYOUT_LIST_EPISODE = "javascript:(function() { " +
         "var element = document.getElementsByClassName('menuRodape')[0].style.display='none'; " +
         "var element = document.getElementsByClassName('btns_sidebar_fixed')[0].style.display='none'; " +
         "var element = document.getElementsByClassName('btns_sidebar_fixedRight')[0].style.display='none'; " +
+        "var elements = document.getElementsByClassName('boxBarraInfo');" +
+        "for (var i = 0; i < elements.length; i ++) {" +
+        "    elements[i].style.display = 'none';" +
+        "}" +
         "var elements = document.getElementsByClassName('conteudoBox');" +
         "for (var i = 0; i < elements.length; i ++) {" +
         "    elements[i].style.display = 'none';" +

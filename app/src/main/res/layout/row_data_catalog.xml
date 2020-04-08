@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/CardView.Dark"
+    app:cardBackgroundColor="#1c1c1c"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:maxLines="20"
             android:singleLine="true"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="#9e9e9e"
             android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -8,22 +8,68 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.api.load
 import com.animescrap.R
 import com.animescrap.core.constant.FILTER_LAYOUT_LIST_EPISODE
+import com.animescrap.core.helper.observeResource
 import com.animescrap.core.util.navigateWithAnimations
+import com.animescrap.data.model.detail.domain.DetailDomain
+import com.animescrap.feature.detail.presentation.viewmodel.DetailViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.layout_bottom_sheet_episode.*
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.fragment_detail.include_loading_center
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val args: DetailFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private val viewModel by viewModel<DetailViewModel>()
+
+    private val bottomSheetBehavior by lazy {
+        BottomSheetBehavior.from(nested_scroll_view_detail)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         loadData()
+        setupBottomSheet()
+    }
+
+    private fun loadData() {
+        viewModel.fetchDetail(args.urlAnime)
+        viewModel.getLiveDataDetail.observeResource(viewLifecycleOwner,
+            onSuccess = {
+                populate(it)
+            },
+            onError = {
+            })
+    }
+
+    private fun setupBottomSheet(){
+        val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when(newState){
+                    BottomSheetBehavior.STATE_COLLAPSED -> showOrHideEffectBottomSheet(false)
+                    else -> showOrHideEffectBottomSheet(true)
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+    }
+
+    private fun populate(detailDomain: DetailDomain){
+        text_detail_title.text = args.titleAnime
+        text_detail_sinopse.text = detailDomain.sinopse
+        image_cover.load(detailDomain.imageCover)
+
+        setupWebViewEpisode()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun loadData() {
+    private fun setupWebViewEpisode(){
         webview_detail_episode.apply {
             showLoading()
 
@@ -57,7 +103,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun showSuccess(){
         if (webview_detail_episode != null || include_loading_center != null) {
-            webview_detail_episode.visibility = View.VISIBLE
+            coordinator_detail.visibility = View.VISIBLE
             include_loading_center.visibility = View.GONE
         }
     }
@@ -65,7 +111,11 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     private fun showLoading(){
         if (webview_detail_episode != null || include_loading_center != null) {
             include_loading_center.visibility = View.VISIBLE
-            webview_detail_episode.visibility = View.GONE
+            coordinator_detail.visibility = View.GONE
         }
+    }
+
+    private fun showOrHideEffectBottomSheet(isVisible: Boolean){
+        layout_effect.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

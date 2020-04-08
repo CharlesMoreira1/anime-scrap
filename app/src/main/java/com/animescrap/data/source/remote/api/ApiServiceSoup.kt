@@ -13,4 +13,8 @@ object ApiServiceSoup {
     fun getListAnime(url: String): Elements {
         return ApiClientSoup.requestSoup(url).select("article.box_view.list").loggingInterceptorJSoupElement()
     }
+
+    fun getDetail(url: String): Elements {
+        return ApiClientSoup.requestSoup(url).select("div#corpo").loggingInterceptorJSoupElement()
+    }
 }
