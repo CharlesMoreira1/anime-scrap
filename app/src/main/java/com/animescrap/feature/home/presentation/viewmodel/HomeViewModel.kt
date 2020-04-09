@@ -12,6 +12,7 @@ import com.animescrap.feature.home.repository.HomeRepository
 class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
 
     private val mutableLiveDataListNewEpisode = MutableLiveData<Resource<List<NewEpisodeDomain>>>()
+    private val listNewEpisodeCopy = mutableListOf<NewEpisodeDomain>()
     var currentPage = 1
     var releasedLoad: Boolean = true
 
@@ -27,8 +28,11 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
 
         viewModelScope.launchWithCallback(
             onSuccess = {
-                mutableLiveDataListNewEpisode.success(repository.getListNewEpisode(HOME_URL.plus(page)))
-                releasedLoad = true
+                listNewEpisodeCopy.addAll(repository.getListNewEpisode(HOME_URL.plus(page)))
+                if (listNewEpisodeCopy.isNotEmpty()) {
+                    mutableLiveDataListNewEpisode.success(listNewEpisodeCopy)
+                    releasedLoad = true
+                }
             },
             onError = {
                 mutableLiveDataListNewEpisode.error(it)

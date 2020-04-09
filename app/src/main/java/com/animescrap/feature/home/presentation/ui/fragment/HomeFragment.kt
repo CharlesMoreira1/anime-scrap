@@ -1,7 +1,6 @@
 package com.animescrap.feature.home.presentation.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -85,10 +84,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     }
 
     private fun populate(listNewEpisodeDomain: List<NewEpisodeDomain>) {
-        if (enableAddListItem) {
-            adapterHome.addList(listNewEpisodeDomain)
-        }
-
+        ignoreReplaceFragment { adapterHome.addList(listNewEpisodeDomain) }
         adapterHome.listItemIsEmpty { viewModel.refreshViewModel() }
     }
 
@@ -101,18 +97,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun swipeRefresh() {
         swipe_refresh_home.setOnRefreshListener {
-            Handler().postDelayed({
-                viewModel.refreshViewModel()
-                adapterHome.clearList()
+            viewModel.refreshViewModel()
+            adapterHome.clearList()
 
-                swipe_refresh_home?.let { it.isRefreshing = false }
-            }, 1000)
+            include_loading_center.visibility = View.GONE
         }
     }
 
     private fun showSuccess(){
         recycler_home.visibility = View.VISIBLE
         include_loading_center.visibility = View.GONE
+        swipe_refresh_home?.let { it.isRefreshing = false }
     }
 
     private fun showLoading(){

@@ -71,10 +71,7 @@ class CatalogFragment : BaseFragment(R.layout.fragment_catalog) {
     }
 
     private fun populate(listCatalogDomain: List<CatalogDomain>) {
-        if (enableAddListItem) {
-            adapterCatalog.addList(listCatalogDomain)
-        }
-
+        ignoreReplaceFragment { adapterCatalog.addList(listCatalogDomain) }
         adapterCatalog.listItemIsEmpty { viewModel.refreshViewModel() }
     }
 

@@ -5,15 +5,21 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLayoutId){
 
-    protected var enableAddListItem = true
+    private var enableItem = true
 
     override fun onResume() {
         super.onResume()
-        enableAddListItem = true
+        enableItem = true
     }
 
     override fun onPause() {
         super.onPause()
-        enableAddListItem = false
+        enableItem = false
+    }
+
+    protected fun ignoreReplaceFragment(itemListener: (() -> Unit)) {
+        if (enableItem) {
+            itemListener.invoke()
+        }
     }
 }

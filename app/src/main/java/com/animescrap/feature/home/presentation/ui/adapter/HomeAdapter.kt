@@ -57,16 +57,16 @@ class HomeAdapter(private val onItemClickListener: ((newEpisodeDomain: NewEpisod
     }
 
     fun addList(listItem: List<NewEpisodeDomain>) {
-        this.listItem.addAll(listItem)
-        notifyItemChanged(this.listItem.size - listItem.size, this.listItem.size)
+        val initPosition = this.listItem.size
+        this.listItem = listItem as ArrayList<NewEpisodeDomain>
 
+        notifyItemRangeInserted(initPosition, this.listItem.size)
         addItemBottom()
     }
 
     fun clearList() {
         isLoadingAdded = false
         this.listItem.clear()
-        notifyDataSetChanged()
     }
 
     fun addItemBottom() {
