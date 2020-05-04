@@ -11,20 +11,20 @@ abstract class BaseViewModel : ViewModel() {
         value = Resource.success(data)
     }
 
-    protected fun <T> MutableLiveData<Resource<T>>.error(e: Exception?) {
-        value = Resource.error(e)
+    protected fun <T> MutableLiveData<Resource<T>>.error(t: Throwable?) {
+        value = Resource.error(t)
     }
 
     protected fun <T> MutableLiveData<Resource<T>>.loading() {
         value = Resource.loading()
     }
 
-    protected fun <T> CoroutineScope.launchWithCallback(onSuccess: suspend () -> T, onError: (Exception) -> Unit) {
+    protected fun <T> CoroutineScope.launchWithCallback(onSuccess: suspend () -> T, onError: (Throwable) -> Unit) {
         launch {
             try {
                 onSuccess.invoke()
-            } catch (e: Exception) {
-                onError.invoke(e)
+            } catch (t: Throwable) {
+                onError.invoke(t)
             }
         }
     }
