@@ -22,7 +22,7 @@ class HomeViewModel(private val repository: HomeRepository) : BaseViewModel() {
     val getLiveDataListNewEpisode: LiveData<Resource<List<NewEpisodeDomain>>>
         get() = mutableLiveDataListNewEpisode
 
-    private fun fetchListNewEpisode(page: Int = 1) {
+    fun fetchListNewEpisode(page: Int = 1) {
         mutableLiveDataListNewEpisode.loading()
 
         viewModelScope.launchWithCallback(
