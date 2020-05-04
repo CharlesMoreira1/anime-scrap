@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
     private var currentNavController: LiveData<NavController>? = null
     private val navGraphIds = listOf(
         R.navigation.nav_home,
-        R.navigation.nav_catalog
+        R.navigation.nav_catalog,
+        R.navigation.nav_history
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 when (destination.id) {
                     R.id.homeFragment -> showOrHideBottomNavigation(true)
                     R.id.catalogFragment -> showOrHideBottomNavigation(true)
+                    R.id.historyFragment -> showOrHideBottomNavigation(true)
                     else -> showOrHideBottomNavigation(false)
                 }
             }

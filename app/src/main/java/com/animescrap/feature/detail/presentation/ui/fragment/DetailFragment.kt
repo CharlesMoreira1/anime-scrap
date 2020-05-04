@@ -17,8 +17,8 @@ import com.animescrap.core.util.navigateWithAnimations
 import com.animescrap.data.model.detail.domain.DetailDomain
 import com.animescrap.feature.detail.presentation.viewmodel.DetailViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.layout_bottom_sheet_episode.*
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet_episode.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : BaseFragment(R.layout.fragment_detail) {

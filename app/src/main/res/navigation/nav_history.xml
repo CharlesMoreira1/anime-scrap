@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_history"
+    tools:ignore="UnusedNavigation"
+    app:startDestination="@id/historyFragment">
+        <fragment
+            android:id="@+id/historyFragment"
+            android:name="com.animescrap.feature.history.presentation.ui.fragment.HistoryFragment"
+            android:label="Historico">
+                <action
+                    android:id="@+id/action_historyFragment_to_detailFragment"
+                    app:destination="@id/detailFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.animescrap.feature.detail.presentation.ui.fragment.DetailFragment"
+            android:label="{title_anime}"
+            tools:layout="@layout/fragment_episode_download" >
+                <argument
+                    android:name="url_anime"
+                    app:argType="string" />
+                <argument
+                    android:name="title_anime"
+                    app:argType="string" />
+                <action
+                    android:id="@+id/action_detailFragment_to_episodeDownloadFragment2"
+                    app:destination="@id/episodeDownloadFragment2" />
+
+        </fragment>
+        <fragment
+            android:id="@+id/episodeDownloadFragment2"
+            android:name="com.animescrap.feature.episodedownload.presentation.ui.fragment.EpisodeDownloadFragment"
+            android:label="{title_anime}"
+            tools:layout="@layout/fragment_episode_download" >
+                <argument
+                    android:name="url_episode"
+                    app:argType="string" />
+                <argument
+                    android:name="title_anime"
+                    app:argType="string" />
+        </fragment>
+</navigation>
