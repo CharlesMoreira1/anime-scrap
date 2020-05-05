@@ -17,4 +17,9 @@ object ApiServiceSoup {
     fun getDetail(url: String): Elements {
         return ApiClientSoup.requestSoup(url).select("div#corpo").loggingInterceptorJSoupElement()
     }
+
+    fun getEpisodeDownload(url: String): Elements {
+        return ApiClientSoup.requestSoup(url).select("div#corpo").select("div.boxBarraInfo h1")?.eq(0)!!
+            .loggingInterceptorJSoupElement()
+    }
 }

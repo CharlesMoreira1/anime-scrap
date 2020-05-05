@@ -6,7 +6,8 @@ import com.animescrap.feature.catalog.presentation.viewmodel.CatalogViewModel
 import com.animescrap.feature.catalog.repository.CatalogRepository
 import com.animescrap.feature.detail.presentation.viewmodel.DetailViewModel
 import com.animescrap.feature.detail.repository.DetailRepository
-import com.animescrap.feature.episodedownload.presentation.ui.viewmodel.EpisodeDownloadViewModel
+import com.animescrap.feature.episodedownload.presentation.viewmodel.EpisodeDownloadViewModel
+import com.animescrap.feature.episodedownload.repository.EpisodeDownloadRepository
 import com.animescrap.feature.history.presentation.viewmodel.HistoryViewModel
 import com.animescrap.feature.history.repository.HistoryRepository
 import com.animescrap.feature.home.presentation.viewmodel.HomeViewModel
@@ -17,6 +18,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
     single { HomeRepository(get()) }
     single { CatalogRepository(get(), get()) }
+    single { EpisodeDownloadRepository(get()) }
     single { HistoryRepository(get()) }
     single { DetailRepository(get()) }
 }
@@ -26,7 +28,7 @@ val viewModelModule = module {
     viewModel { CatalogViewModel(get()) }
     viewModel { DetailViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
-    viewModel { EpisodeDownloadViewModel(get()) }
+    viewModel { EpisodeDownloadViewModel(get(), get()) }
 }
 
 val apiServiceClientModule = module {
@@ -37,5 +39,4 @@ val databaseModule = module {
     single { AppDatabase.getInstance(context = get()) }
     single { get<AppDatabase>().catalogDao() }
     single { get<AppDatabase>().historyDao() }
-
 }

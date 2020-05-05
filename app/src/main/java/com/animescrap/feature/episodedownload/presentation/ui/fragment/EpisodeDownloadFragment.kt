@@ -12,8 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.animescrap.R
 import com.animescrap.core.constant.FILTER_LAYOUT_EPISODE_DOWNLOAD
 import com.animescrap.core.helper.BottomSheetFragment
-import com.animescrap.data.model.history.entity.HistoryResponse
-import com.animescrap.feature.episodedownload.presentation.ui.viewmodel.EpisodeDownloadViewModel
+import com.animescrap.feature.episodedownload.presentation.viewmodel.EpisodeDownloadViewModel
 import kotlinx.android.synthetic.main.fragment_episode_download.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.nio.charset.Charset
@@ -64,7 +63,7 @@ class EpisodeDownloadFragment : Fragment(R.layout.fragment_episode_download) {
     }
 
     private fun insertAnimeInHistory(titleEncoded: String) {
-        viewModel.addAnimeToHistory(HistoryResponse(titleEncoded, 0, ""))
+        viewModel.addAnimeToHistory(args.urlEpisode, titleEncoded)
     }
 
     private fun showSuccess(){
