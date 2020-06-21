@@ -13,9 +13,9 @@ class CatalogResponse() {
 
     constructor(element: Element? = null) : this() {
         titleEncoded = Base64.encodeToString(element?.select("h1.grid_title")?.text()?.toByteArray(Charset.defaultCharset()), Base64.DEFAULT) ?: ""
-        title = element?.select("h1.grid_title")?.text().toString()
+        title = element?.select("h2.grid_title")?.text().toString()
         image = element?.select("img.thumb_anime")?.attr("data-src").toString()
-        url = element?.select("h1.grid_title a")?.attr("href").toString()
+        url = element?.select("h2.grid_title a")?.attr("href").toString()
         year = element?.select("ul.grid_itens li")
             ?.eq(1)?.text()?.replace("Ano:", "")?.trim().toString()
         type = element?.select("ul.grid_itens li")

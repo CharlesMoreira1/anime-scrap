@@ -12,6 +12,7 @@ import coil.api.load
 import com.animescrap.R
 import com.animescrap.core.base.BaseFragment
 import com.animescrap.core.constant.FILTER_LAYOUT_LIST_EPISODE
+import com.animescrap.core.constant.USER_AGENT
 import com.animescrap.core.helper.observeResource
 import com.animescrap.core.util.navigateWithAnimations
 import com.animescrap.data.model.detail.domain.DetailDomain
@@ -75,6 +76,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
         webview_detail_episode.apply {
             showLoading()
 
+            settings.userAgentString = USER_AGENT
             settings.javaScriptEnabled = true
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {

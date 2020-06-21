@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.animescrap.R
 import com.animescrap.core.constant.FILTER_LAYOUT_EPISODE_DOWNLOAD
+import com.animescrap.core.constant.USER_AGENT
 import com.animescrap.core.helper.BottomSheetFragment
 import com.animescrap.feature.episodedownload.presentation.viewmodel.EpisodeDownloadViewModel
 import kotlinx.android.synthetic.main.fragment_episode_download.*
@@ -35,6 +36,7 @@ class EpisodeDownloadFragment : Fragment(R.layout.fragment_episode_download) {
         webview_episode_download.apply {
             showLoading()
 
+            settings.userAgentString = USER_AGENT
             settings.javaScriptEnabled = true
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {

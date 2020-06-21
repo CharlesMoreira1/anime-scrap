@@ -12,10 +12,10 @@ class NewEpisodeResponse(element: Element? = null){
         private const val TYPE_MOVIE = "Filme"
     }
 
-    var title = element?.select("h1.grid_title")?.text().toString()
+    var title = element?.select("h2.grid_title")?.text().toString()
     var subTitle = element?.select("ul.grid_itens li")?.text().toString()
     var image = element?.select("img.thumb_anime")?.attr("data-src").toString()
-    var url = element?.select("h1.grid_title a")?.attr("href").toString()
+    var url = element?.select("h2.grid_title a")?.attr("href").toString()
 
     fun addElements(elements: Elements): List<NewEpisodeResponse> {
         val listElements = mutableListOf<NewEpisodeResponse>()
