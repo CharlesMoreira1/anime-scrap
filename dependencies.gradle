@@ -3,7 +3,7 @@ ext {
     materialVersion = "1.1.0"
     navigationVersion = "2.3.0-alpha06"
     coilVersion = "0.9.5"
-    lottieVersion = "3.4.0"
+    lottieVersion = "3.4.4"
     jsoupVersion = "1.13.1"
     lifeCycleVersion = "2.2.0"
     koinVersion = "2.1.5"
