@@ -6,4 +6,5 @@ updates:
       interval: daily
     ignore:
     - dependency-name: "alpha"
+      update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 10
