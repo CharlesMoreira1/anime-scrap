@@ -6,7 +6,7 @@ ext {
     lottieVersion = "3.4.0"
     jsoupVersion = "1.13.1"
     lifeCycleVersion = "2.2.0"
-    koinVersion = "2.1.5"
+    koinVersion = "2.2.2"
     roomVersion = "2.2.5"
     timberVersion = "4.7.1"
 
